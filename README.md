@@ -2,7 +2,7 @@
 
 > 海軍戦略シミュレーション"風"Webゲーム。ターン制で艦隊を操り、海域の覇権を争う。
 
-[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-blue)](https://YOUR_USERNAME.github.io/naval-strategy-game/)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-blue)](https://tailofyukki-cell.github.io/naval-strategy-game/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ---
@@ -109,7 +109,7 @@
 
 ## 🌐 プレイURL
 
-**[https://YOUR_USERNAME.github.io/naval-strategy-game/](https://YOUR_USERNAME.github.io/naval-strategy-game/)**
+**[https://tailofyukki-cell.github.io/naval-strategy-game/](https://tailofyukki-cell.github.io/naval-strategy-game/)**
 
 ---
 
