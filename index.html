@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>蒼海の覇者 - 海軍戦略シミュレーション</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app">
+    <!-- タイトル画面 -->
+    <div id="title-screen" class="screen active">
+      <div class="title-content">
+        <div class="title-emblem">⚓</div>
+        <h1 class="title-main">蒼海の覇者</h1>
+        <p class="title-sub">Naval Strategy Simulation</p>
+        <div class="title-buttons">
+          <button id="btn-new-game" class="btn btn-primary btn-large">新規ゲーム</button>
+          <button id="btn-load-game" class="btn btn-secondary btn-large">セーブデータ読込</button>
+          <button id="btn-how-to-play" class="btn btn-info btn-large">遊び方</button>
+        </div>
+        <p class="title-version">Version 1.0.0 | MIT License</p>
+      </div>
+    </div>
+
+    <!-- 遊び方画面 -->
+    <div id="howto-screen" class="screen">
+      <div class="howto-content">
+        <h2>⚓ 遊び方</h2>
+        <div class="howto-sections">
+          <div class="howto-section">
+            <h3>🎯 目標</h3>
+            <p>30ターン以内に港を4つ以上確保、または敵の港を全て占領すると勝利。自軍の港が全て失われるか艦隊が全滅すると敗北。</p>
+          </div>
+          <div class="howto-section">
+            <h3>🚢 艦種</h3>
+            <table class="howto-table">
+              <tr><th>艦種</th><th>HP</th><th>攻撃</th><th>防御</th><th>移動</th><th>コスト</th></tr>
+              <tr><td>駆逐艦(DD)</td><td>30</td><td>15</td><td>5</td><td>4</td><td>燃料20/鋼材15</td></tr>
+              <tr><td>巡洋艦(CA)</td><td>60</td><td>25</td><td>10</td><td>3</td><td>燃料35/鋼材30</td></tr>
+              <tr><td>戦艦(BB)</td><td>120</td><td>45</td><td>20</td><td>2</td><td>燃料60/鋼材80</td></tr>
+            </table>
+          </div>
+          <div class="howto-section">
+            <h3>🗺️ 操作方法</h3>
+            <ul>
+              <li>マップ上の自軍艦隊をクリックして選択</li>
+              <li>移動可能範囲（青ハイライト）をクリックして移動</li>
+              <li>自軍の港を選択して艦隊を建造</li>
+              <li>敵・中立の港に移動すると自動占領</li>
+              <li>敵艦隊と同じマスに移動すると戦闘発生</li>
+              <li>「ターン終了」ボタンで敵ターンへ</li>
+            </ul>
+          </div>
+          <div class="howto-section">
+            <h3>💰 資源</h3>
+            <p>毎ターン開始時、保有する港から燃料・鋼材を獲得。資源を消費して港で艦隊を建造できる。</p>
+          </div>
+        </div>
+        <button id="btn-back-to-title" class="btn btn-secondary">タイトルに戻る</button>
+      </div>
+    </div>
+
+    <!-- ゲーム画面 -->
+    <div id="game-screen" class="screen">
+      <!-- ヘッダー -->
+      <div id="game-header">
+        <div class="header-left">
+          <span class="game-title">⚓ 蒼海の覇者</span>
+        </div>
+        <div class="header-center">
+          <div class="turn-info">
+            <span id="turn-phase-label" class="phase-label player-phase">自軍ターン</span>
+            <span id="turn-number">ターン 1 / 30</span>
+          </div>
+        </div>
+        <div class="header-right">
+          <div class="resources">
+            <span class="resource fuel">⛽ <span id="res-fuel">80</span></span>
+            <span class="resource steel">🔩 <span id="res-steel">60</span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- メインコンテンツ -->
+      <div id="game-main">
+        <!-- マップエリア -->
+        <div id="map-container">
+          <canvas id="game-canvas"></canvas>
+        </div>
+
+        <!-- サイドパネル -->
+        <div id="side-panel">
+          <!-- 選択情報パネル -->
+          <div id="info-panel" class="panel">
+            <h3 class="panel-title">📋 選択情報</h3>
+            <div id="info-content">
+              <p class="info-placeholder">マップ上のユニットまたは港を選択してください</p>
+            </div>
+          </div>
+
+          <!-- 行動パネル -->
+          <div id="action-panel" class="panel">
+            <h3 class="panel-title">⚡ 行動</h3>
+            <div id="action-buttons">
+              <button id="btn-end-turn" class="btn btn-primary btn-full">ターン終了</button>
+              <button id="btn-save" class="btn btn-secondary btn-full">セーブ</button>
+              <button id="btn-title" class="btn btn-danger btn-full">タイトルへ</button>
+            </div>
+          </div>
+
+          <!-- 勢力情報パネル -->
+          <div id="faction-panel" class="panel">
+            <h3 class="panel-title">🏴 勢力情報</h3>
+            <div class="faction-info">
+              <div class="faction player-faction">
+                <span class="faction-name">🔵 連合艦隊</span>
+                <div class="faction-stats">
+                  <span>港: <span id="player-ports">2</span></span>
+                  <span>艦隊: <span id="player-fleets">2</span></span>
+                </div>
+              </div>
+              <div class="faction enemy-faction">
+                <span class="faction-name">🔴 帝国艦隊</span>
+                <div class="faction-stats">
+                  <span>港: <span id="enemy-ports">2</span></span>
+                  <span>艦隊: <span id="enemy-fleets">2</span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 戦闘ログ -->
+          <div id="log-panel" class="panel">
+            <h3 class="panel-title">📜 戦闘ログ</h3>
+            <div id="battle-log">
+              <p class="log-entry info-log">ゲーム開始。蒼海の覇権を目指せ！</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 建造モーダル -->
+    <div id="build-modal" class="modal hidden">
+      <div class="modal-content">
+        <h3>⚓ 艦隊建造</h3>
+        <p id="build-port-name" class="build-port-name"></p>
+        <div id="build-options" class="build-options"></div>
+        <button id="btn-build-cancel" class="btn btn-secondary">キャンセル</button>
+      </div>
+    </div>
+
+    <!-- 戦闘モーダル -->
+    <div id="battle-modal" class="modal hidden">
+      <div class="modal-content battle-modal-content">
+        <h3>⚔️ 海戦発生！</h3>
+        <div id="battle-display" class="battle-display">
+          <div class="battle-side player-side">
+            <div class="battle-ship-icon">🔵</div>
+            <div id="battle-player-name" class="battle-name"></div>
+            <div id="battle-player-hp" class="battle-hp"></div>
+          </div>
+          <div class="battle-vs">VS</div>
+          <div class="battle-side enemy-side">
+            <div class="battle-ship-icon">🔴</div>
+            <div id="battle-enemy-name" class="battle-name"></div>
+            <div id="battle-enemy-hp" class="battle-hp"></div>
+          </div>
+        </div>
+        <div id="battle-log-modal" class="battle-log-modal"></div>
+        <button id="btn-battle-close" class="btn btn-primary">確認</button>
+      </div>
+    </div>
+
+    <!-- ゲーム終了モーダル -->
+    <div id="gameover-modal" class="modal hidden">
+      <div class="modal-content gameover-content">
+        <div id="gameover-icon" class="gameover-icon"></div>
+        <h2 id="gameover-title"></h2>
+        <p id="gameover-message"></p>
+        <div class="gameover-stats">
+          <div>最終ターン: <span id="gameover-turn"></span></div>
+          <div>確保港数: <span id="gameover-ports"></span></div>
+        </div>
+        <div class="gameover-buttons">
+          <button id="btn-restart" class="btn btn-primary btn-large">もう一度</button>
+          <button id="btn-gameover-title" class="btn btn-secondary btn-large">タイトルへ</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/utils.js"></script>
+  <script src="js/gameData.js"></script>
+  <script src="js/mapRenderer.js"></script>
+  <script src="js/fleet.js"></script>
+  <script src="js/combat.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="js/gameState.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

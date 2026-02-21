@@ -1,0 +1,37 @@
+{
+  "shipTypes": [
+    {
+      "id": "destroyer",
+      "name": "駆逐艦",
+      "symbol": "DD",
+      "hp": 30,
+      "attack": 15,
+      "defense": 5,
+      "movement": 4,
+      "cost": { "fuel": 20, "steel": 15 },
+      "description": "高速・低コスト。偵察や拠点確保に向く。"
+    },
+    {
+      "id": "cruiser",
+      "name": "巡洋艦",
+      "symbol": "CA",
+      "hp": 60,
+      "attack": 25,
+      "defense": 10,
+      "movement": 3,
+      "cost": { "fuel": 35, "steel": 30 },
+      "description": "バランス型。主力として活躍する。"
+    },
+    {
+      "id": "battleship",
+      "name": "戦艦",
+      "symbol": "BB",
+      "hp": 120,
+      "attack": 45,
+      "defense": 20,
+      "movement": 2,
+      "cost": { "fuel": 60, "steel": 80 },
+      "description": "最強の攻撃力と耐久力。移動は遅い。"
+    }
+  ]
+}

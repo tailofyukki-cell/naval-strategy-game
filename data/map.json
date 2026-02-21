@@ -1,0 +1,38 @@
+{
+  "width": 12,
+  "height": 8,
+  "cellSize": 64,
+  "terrainTypes": {
+    "sea": { "id": "sea", "name": "海域", "passable": true, "moveCost": 1 },
+    "port": { "id": "port", "name": "港", "passable": true, "moveCost": 1, "isPort": true },
+    "shoal": { "id": "shoal", "name": "浅瀬", "passable": false, "moveCost": 999 }
+  },
+  "grid": [
+    ["sea","sea","sea","shoal","sea","sea","sea","sea","sea","sea","sea","sea"],
+    ["sea","port","sea","sea","sea","sea","sea","sea","sea","sea","port","sea"],
+    ["sea","sea","sea","sea","shoal","sea","sea","sea","sea","sea","sea","sea"],
+    ["sea","sea","sea","sea","sea","sea","sea","sea","sea","sea","sea","sea"],
+    ["sea","sea","sea","sea","sea","sea","sea","sea","shoal","sea","sea","sea"],
+    ["sea","sea","sea","sea","sea","sea","sea","sea","sea","sea","sea","sea"],
+    ["sea","port","sea","sea","sea","sea","sea","sea","sea","sea","port","sea"],
+    ["sea","sea","sea","sea","sea","sea","sea","sea","sea","shoal","sea","sea"]
+  ],
+  "ports": [
+    { "x": 1, "y": 1, "name": "アルバ港", "owner": "player", "income": { "fuel": 10, "steel": 8 } },
+    { "x": 10, "y": 1, "name": "ノルド港", "owner": "enemy", "income": { "fuel": 10, "steel": 8 } },
+    { "x": 1, "y": 6, "name": "サウス基地", "owner": "player", "income": { "fuel": 8, "steel": 6 } },
+    { "x": 10, "y": 6, "name": "イースト要塞", "owner": "enemy", "income": { "fuel": 8, "steel": 6 } },
+    { "x": 5, "y": 3, "name": "中央泊地", "owner": "neutral", "income": { "fuel": 12, "steel": 10 } },
+    { "x": 7, "y": 4, "name": "西方海峡港", "owner": "neutral", "income": { "fuel": 10, "steel": 8 } }
+  ],
+  "initialFleets": {
+    "player": [
+      { "type": "cruiser", "x": 2, "y": 1, "name": "第一艦隊" },
+      { "type": "destroyer", "x": 2, "y": 6, "name": "第二艦隊" }
+    ],
+    "enemy": [
+      { "type": "cruiser", "x": 9, "y": 1, "name": "敵第一艦隊" },
+      { "type": "destroyer", "x": 9, "y": 6, "name": "敵第二艦隊" }
+    ]
+  }
+}

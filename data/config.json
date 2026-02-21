@@ -1,0 +1,28 @@
+{
+  "game": {
+    "maxTurns": 30,
+    "victoryConditions": {
+      "captureAllEnemyPorts": true,
+      "capturePorts": 4,
+      "description": "敵の港を全て占領、または4つ以上の港を確保で勝利"
+    },
+    "defeatConditions": {
+      "allPortsLost": true,
+      "allFleetsDestroyed": true,
+      "description": "自軍の港が全て失われるか、艦隊が全滅すると敗北"
+    }
+  },
+  "resources": {
+    "player": { "fuel": 80, "steel": 60 },
+    "enemy": { "fuel": 80, "steel": 60 }
+  },
+  "combat": {
+    "randomFactor": 0.3,
+    "formula": "攻撃力 × (1 ± randomFactor) - 防御力 = ダメージ（最低1）"
+  },
+  "ai": {
+    "buildThreshold": { "fuel": 40, "steel": 35 },
+    "preferredBuildType": "destroyer",
+    "aggressionLevel": 0.6
+  }
+}
